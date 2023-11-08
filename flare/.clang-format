@@ -1,0 +1,13 @@
+---
+Language: Cpp
+BasedOnStyle: Google
+DerivePointerAlignment: false
+PointerAlignment: Left
+IncludeBlocks: Preserve
+---
+Language: Proto
+DisableFormat: true
+---
+Language: JavaScript
+DisableFormat: true
+---
