@@ -8,6 +8,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 project(flare C CXX)
 
+set(CMAKE_VERBOSE_MAKEFILEON OFF)
+
 set(CXX_FLAGS
   -g
   )

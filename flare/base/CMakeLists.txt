@@ -2,6 +2,8 @@ set(base_SRCS
   demangle.cc
   chrono.cc
   internal/logging.cc
+  thread/latch.cc
+  logging.cc
   )
 
 add_library(flare_base ${base_SRCS})
@@ -24,4 +26,41 @@ target_link_libraries(chrono_test flare_base gtest gtest_main pthread)
 add_executable(function_view_test function_view_test.cc)
 target_link_libraries(function_view_test flare_base gtest gtest_main pthread)
 
+add_executable(delayed_init_test delayed_init_test.cc)
+target_link_libraries(delayed_init_test flare_base gtest gtest_main pthread)
+
+add_executable(down_cast_test down_cast_test.cc)
+target_link_libraries(down_cast_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(endian_test endian_test.cc)
+target_link_libraries(endian_test flare_base gtest gtest_main pthread)
+
+add_executable(enum_test enum_test.cc)
+target_link_libraries(enum_test flare_base gtest gtest_main pthread)
+
+add_executable(expected_test expected_test.cc)
+target_link_libraries(expected_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(handle_test handle_test.cc)
+target_link_libraries(handle_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(logging_test logging_test.cc)
+target_link_libraries(logging_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(logging_benchmark logging_benchmark.cc)
+target_link_libraries(logging_benchmark flare_base benchmark benchmark_main glog::glog fmt::fmt pthread)
+
+add_executable(id_alloc_test id_alloc_test.cc)
+target_link_libraries(id_alloc_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(id_alloc_benchmark id_alloc_benchmark.cc)
+target_link_libraries(id_alloc_benchmark flare_base benchmark benchmark_main glog::glog fmt::fmt pthread)
+
+add_executable(maybe_owning_test maybe_owning_test.cc)
+target_link_libraries(maybe_owning_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(never_destroyed_test never_destroyed_test.cc)
+target_link_libraries(never_destroyed_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
 add_subdirectory(internal)
+add_subdirectory(thread)
