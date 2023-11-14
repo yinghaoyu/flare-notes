@@ -1,6 +1,7 @@
 set(base_SRCS
   demangle.cc
   chrono.cc
+  internal/logging.cc
   )
 
 add_library(flare_base ${base_SRCS})
@@ -22,3 +23,5 @@ target_link_libraries(chrono_test flare_base gtest gtest_main pthread)
 
 add_executable(function_view_test function_view_test.cc)
 target_link_libraries(function_view_test flare_base gtest gtest_main pthread)
+
+add_subdirectory(internal)

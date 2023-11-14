@@ -12,6 +12,9 @@ set(CXX_FLAGS
   -g
   )
 
+find_package (glog 0.6.0 REQUIRED)
+find_package(fmt REQUIRED)
+
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
