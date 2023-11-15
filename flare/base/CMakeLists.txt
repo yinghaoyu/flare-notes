@@ -1,9 +1,16 @@
 set(base_SRCS
   demangle.cc
   chrono.cc
+  experimental/bloom_filter.cc
+  experimental/byte_set.cc
+  experimental/uuid.cc
   internal/logging.cc
+  internal/memory_barrier.cc
   thread/latch.cc
   logging.cc
+  status.cc
+  string.cc
+  tsc.cc
   )
 
 add_library(flare_base ${base_SRCS})
@@ -62,5 +69,27 @@ target_link_libraries(maybe_owning_test flare_base gtest gtest_main glog::glog f
 add_executable(never_destroyed_test never_destroyed_test.cc)
 target_link_libraries(never_destroyed_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
 
+add_executable(overloaded_test overloaded_test.cc)
+target_link_libraries(overloaded_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(ref_ptr_test ref_ptr_test.cc)
+target_link_libraries(ref_ptr_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(status_test status_test.cc)
+target_link_libraries(status_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(string_test string_test.cc)
+target_link_libraries(string_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(tsc_test tsc_test.cc)
+target_link_libraries(tsc_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_executable(tsc_benchmark tsc_benchmark.cc)
+target_link_libraries(tsc_benchmark flare_base benchmark benchmark_main glog::glog fmt::fmt pthread)
+
+add_executable(type_index_test type_index_test.cc)
+target_link_libraries(type_index_test flare_base gtest gtest_main glog::glog fmt::fmt pthread)
+
+add_subdirectory(experimental)
 add_subdirectory(internal)
 add_subdirectory(thread)
