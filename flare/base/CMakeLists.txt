@@ -4,6 +4,9 @@ set(base_SRCS
   experimental/bloom_filter.cc
   experimental/byte_set.cc
   experimental/uuid.cc
+  hazptr/entry_cache.cc
+  hazptr/hazptr_domain.cc
+  hazptr/hazptr_object.cc
   internal/background_task_host.cc
   internal/logging.cc
   internal/cpu.cc
@@ -109,6 +112,12 @@ target_link_libraries(tsc_benchmark ${IN_LIBS} benchmark_main)
 
 add_executable(type_index_test type_index_test.cc)
 target_link_libraries(type_index_test ${IN_LIBS} gtest_main)
+
+# add_executable(hazptr_test hazptr_test.cc)
+# target_link_libraries(hazptr_test ${IN_LIBS}) # 不需要 gtest_main
+
+add_executable(hazptr_benchmark hazptr_benchmark.cc)
+target_link_libraries(hazptr_benchmark ${IN_LIBS} benchmark_main)
 
 add_subdirectory(experimental)
 add_subdirectory(internal)

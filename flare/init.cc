@@ -20,11 +20,11 @@
 // #include "flare/fiber/this_fiber.h"
 #include "flare/init/on_init.h"
 #include "flare/init/override_flag.h"
-#include "flare/io/event_loop.h"
-// #include "flare/net/http/http_client.h"
-// #include "flare/net/internal/http_engine.h"
-// #include "flare/rpc/binlog/init.h"
-// #include "flare/rpc/internal/stream_call_gate_pool.h"
+// #include "flare/io/event_loop.h"
+//  #include "flare/net/http/http_client.h"
+//  #include "flare/net/internal/http_engine.h"
+//  #include "flare/rpc/binlog/init.h"
+//  #include "flare/rpc/internal/stream_call_gate_pool.h"
 
 using namespace std::literals;
 
@@ -58,7 +58,7 @@ void InstallQuitSignalHandler() {
 
 // Prewarm some frequently used object pools.
 void PrewarmObjectPools() {
-  constexpr auto kFibersPerSchedulingGroup = 1024;
+  /* constexpr auto kFibersPerSchedulingGroup = 1024;
   constexpr auto kBufferSizePerFiber = 131072;
 
   for (std::size_t i = 0; i != fiber::GetSchedulingGroupCount(); ++i) {
@@ -72,7 +72,7 @@ void PrewarmObjectPools() {
             builder.Append(temp, sizeof(temp));
           });
     }
-  }
+  } */
 }
 
 }  // namespace
@@ -103,7 +103,7 @@ int Start(int argc, char** argv, Function<int(int, char**)> cb) {
 
   InitializeBasicRuntime();
   detail::RunAllInitializers();
-  fiber::StartRuntime();
+  // fiber::StartRuntime();
 
   FLARE_LOG_INFO("Flare runtime initialized.");
 
@@ -111,7 +111,7 @@ int Start(int argc, char** argv, Function<int(int, char**)> cb) {
   int rc = 0;
   {
     Latch l(1);
-    fiber::internal::StartFiberDetached([&] {
+    /* fiber::internal::StartFiberDetached([&] {
       StartAllEventLoops();
       PrewarmObjectPools();  // To minimize slowness on startup.
 
@@ -137,11 +137,11 @@ int Start(int argc, char** argv, Function<int(int, char**)> cb) {
 
       l.count_down();
     });  // Don't `join()` here, we can't use fiber synchronization
-         // primitives outside of fiber context.
+         // primitives outside of fiber context.*/
     l.wait();
   }
 
-  fiber::TerminateRuntime();
+  // fiber::TerminateRuntime();
   detail::RunAllFinalizers();
   TerminateBasicRuntime();
 
@@ -155,7 +155,7 @@ void WaitForQuitSignal() {
   InstallQuitSignalHandler();
 
   while (!g_quit_signal.load(std::memory_order_relaxed)) {
-    this_fiber::SleepFor(100ms);
+    // this_fiber::SleepFor(100ms);
   }
   FLARE_LOG_INFO("Quit signal received.");
 }
@@ -171,7 +171,7 @@ void InitializeBasicRuntime() {
 }
 
 void TerminateBasicRuntime() {
-  internal::FlushDpcs();
+  // internal::FlushDpcs();
   internal::TimeKeeper::Instance()->Stop();
   internal::TimeKeeper::Instance()->Join();
   internal::BackgroundTaskHost::Instance()->Stop();

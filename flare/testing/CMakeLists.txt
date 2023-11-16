@@ -1,4 +1,5 @@
 set(testing_SRCS
+  ../init.cc
   main.cc
   )
 

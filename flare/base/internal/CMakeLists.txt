@@ -56,7 +56,7 @@ add_executable(thread_pool_test thread_pool_test.cc)
 target_link_libraries(thread_pool_test ${IN_LIBS} gtest_main)
 
 # add_executable(time_keeper_test time_keeper_test.cc)
-# target_link_libraries(time_keeper_test ${LIBS} gtest_main)
+# target_link_libraries(time_keeper_test ${IN_LIBS}) # 这里不需要 gtest_main
 
-# add_executable(time_view_test time_view_test.cc)
-# target_link_libraries(time_view_test ${LIBS} gtest_main)
+add_executable(time_view_test time_view_test.cc)
+target_link_libraries(time_view_test ${IN_LIBS} gtest_main)
