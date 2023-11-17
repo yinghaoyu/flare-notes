@@ -1,0 +1,5 @@
+add_executable(thread_local_ref_counted_test ref_counted_test.cc)
+target_link_libraries(thread_local_ref_counted_test ${IN_LIBS} gtest_main)
+
+add_executable(thread_local_ref_counted_benchmark ref_counted_benchmark.cc)
+target_link_libraries(thread_local_ref_counted_benchmark ${IN_LIBS} benchmark_main)

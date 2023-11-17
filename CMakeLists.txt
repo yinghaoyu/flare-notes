@@ -16,6 +16,7 @@ set(CXX_FLAGS
 
 find_package (glog 0.6.0 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(jsoncpp REQUIRED)
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

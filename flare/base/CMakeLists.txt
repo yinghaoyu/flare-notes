@@ -14,12 +14,22 @@ set(base_SRCS
   internal/thread_pool.cc
   internal/time_keeper.cc
   internal/index_alloc.cc
+  net/endpoint.cc
+  net/uri.cc
+  object_pool/disabled.cc
+  object_pool/global.cc
+  object_pool/memory_node_shared.cc
+  object_pool/thread_local.cc
   thread/latch.cc
   thread/attribute.cc
+  thread/spinlock.cc
+  write_mostly/metrics.cc
   logging.cc
   status.cc
   string.cc
   tsc.cc
+  object_pool.cc
+  exposed_var.cc
   )
 
 set(IN_LIBS
@@ -31,6 +41,7 @@ set(IN_LIBS
   benchmark
   glog::glog
   fmt::fmt
+  jsoncpp_lib
   xxhash
   pthread
   dl
@@ -119,6 +130,12 @@ target_link_libraries(type_index_test ${IN_LIBS} gtest_main)
 add_executable(hazptr_benchmark hazptr_benchmark.cc)
 target_link_libraries(hazptr_benchmark ${IN_LIBS} benchmark_main)
 
+# add_executable(exposed_var_test exposed_var_test.cc)
+# target_link_libraries(exposed_var_test ${IN_LIBS}) # 不需要 gtest_main
+
 add_subdirectory(experimental)
 add_subdirectory(internal)
+add_subdirectory(net)
+add_subdirectory(object_pool)
 add_subdirectory(thread)
+add_subdirectory(write_mostly)
