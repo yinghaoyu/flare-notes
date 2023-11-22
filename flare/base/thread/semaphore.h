@@ -1,0 +1,131 @@
+#ifndef FLARE_BASE_THREAD_SEMAPHORE_H_
+#define FLARE_BASE_THREAD_SEMAPHORE_H_
+
+#include <chrono>
+#include <cinttypes>
+#include <condition_variable>
+#include <limits>
+#include <mutex>
+#include <type_traits>
+
+#include "flare/base/internal/logging.h"
+
+namespace flare {
+
+// @sa: https://en.cppreference.com/w/cpp/thread/counting_semaphore
+
+// BasicCountingSemaphore is mostly used internally, to avoid code duplication
+// between pthread / fiber version semaphore.
+template <class Mutex, class ConditionVariable, std::ptrdiff_t kLeastMaxValue>
+class BasicCountingSemaphore {
+ public:
+  static_assert(kLeastMaxValue >= 0);
+  explicit BasicCountingSemaphore(std::ptrdiff_t desired) : current_(desired) {}
+
+  static constexpr ptrdiff_t max() noexcept { return kLeastMaxValue; }
+
+  // Acquire / release semaphore, blocking.
+  void acquire();
+  void release(std::ptrdiff_t count = 1);
+
+  // Non-blocking counterpart of `acquire`. This one fails immediately if the
+  // semaphore can't be acquired.
+  bool try_acquire() noexcept;
+
+  // `acquire` with timeout.
+  template <class Rep, class Period>
+  bool try_acquire_for(std::chrono::duration<Rep, Period> expires_in);
+  template <class Clock, class Duration>
+  bool try_acquire_until(std::chrono::time_point<Clock, Duration> expires_at);
+
+ private:
+  Mutex lock_;
+  ConditionVariable cv_;
+  std::uint32_t current_;
+};
+// Mimic of C++20 `std::counting_semaphore`. It's unfortunate that for the
+// moment our compiler (libstdc++, to be precise) doesn't implement these
+// classes yet.
+template <std::ptrdiff_t kLeastMaxValue =
+              std::numeric_limits<std::uint32_t>::max()>
+class CountingSemaphore
+    : public BasicCountingSemaphore<std::mutex, std::condition_variable,
+                                    kLeastMaxValue> {
+ public:
+  explicit CountingSemaphore(std::ptrdiff_t desired)
+      : BasicCountingSemaphore<std::mutex, std::condition_variable,
+                               kLeastMaxValue>(desired) {}
+};
+
+// `BinarySemaphore` permits more optimization. But for the moment we just make
+// it an alias to `CountingSemaphore<1>`.
+using BinarySemaphore = CountingSemaphore<1>;
+
+/////////////////////////////////
+// Implementation goes below.  //
+/////////////////////////////////
+
+template <class Mutex, class ConditionVariable, std::ptrdiff_t kLeastMaxValue>
+void BasicCountingSemaphore<Mutex, ConditionVariable,
+                            kLeastMaxValue>::acquire() {
+  std::unique_lock lk(lock_);
+  cv_.wait(lk, [&] { return current_ != 0; });
+  --current_;
+  return;
+}
+
+template <class Mutex, class ConditionVariable, std::ptrdiff_t kLeastMaxValue>
+void BasicCountingSemaphore<Mutex, ConditionVariable, kLeastMaxValue>::release(
+    std::ptrdiff_t count) {
+  // Count should be less than LeastMaxValue and greater than 0
+  FLARE_CHECK_LE(count, kLeastMaxValue);
+  FLARE_CHECK_GT(count, 0);
+  std::scoped_lock lk(lock_);
+  // Internal counter should be less than LeastMaxValue
+  FLARE_CHECK_LE(current_, kLeastMaxValue - count);
+  current_ += count;
+  if (count == 1) {
+    cv_.notify_one();
+  } else {
+    cv_.notify_all();
+  }
+}
+
+template <class Mutex, class ConditionVariable, std::ptrdiff_t kLeastMaxValue>
+bool BasicCountingSemaphore<Mutex, ConditionVariable,
+                            kLeastMaxValue>::try_acquire() noexcept {
+  std::scoped_lock _(lock_);
+  if (current_) {
+    --current_;
+    return true;
+  }
+  return false;
+}
+
+template <class Mutex, class ConditionVariable, std::ptrdiff_t kLeastMaxValue>
+template <class Rep, class Period>
+bool BasicCountingSemaphore<Mutex, ConditionVariable, kLeastMaxValue>::
+    try_acquire_for(std::chrono::duration<Rep, Period> expires_in) {
+  std::unique_lock lk(lock_);
+  if (!cv_.wait_for(lk, expires_in, [&] { return current_ != 0; })) {
+    return false;
+  }
+  --current_;
+  return true;
+}
+
+template <class Mutex, class ConditionVariable, std::ptrdiff_t kLeastMaxValue>
+template <class Clock, class Duration>
+bool BasicCountingSemaphore<Mutex, ConditionVariable, kLeastMaxValue>::
+    try_acquire_until(std::chrono::time_point<Clock, Duration> expires_at) {
+  std::unique_lock lk(lock_);
+  if (!cv_.wait_for(lk, expires_at, [&] { return current_ != 0; })) {
+    return false;
+  }
+  --current_;
+  return true;
+}
+
+}  // namespace flare
+
+#endif  // FLARE_BASE_THREAD_SEMAPHORE_H_

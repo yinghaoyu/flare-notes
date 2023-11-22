@@ -35,7 +35,7 @@ TEST(Endpoint, ToString2) {
 
 TEST(Endpoint, ToString3) {
   ASSERT_EQ("192.0.2.1:5678",
-            Format("{}", EndpointFromIpv4("192.0.2.1", 5678).ToString()));
+            Format("{}", EndpointFromIpv4("192.0.2.1", 5678)));
 }
 
 TEST(Endpoint, ToString4) {

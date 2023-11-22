@@ -8,16 +8,16 @@
 
 // #include "flare/base/buffer.h"
 #include "flare/base/internal/background_task_host.h"
-// #include "flare/base/internal/dpc.h"
+#include "flare/base/internal/dpc.h"
 #include "flare/base/internal/time_keeper.h"
 #include "flare/base/logging.h"
-// #include "flare/base/monitoring/init.h"
+#include "flare/base/monitoring/init.h"
 // #include "flare/base/option.h"
 #include "flare/base/random.h"
 #include "flare/base/thread/latch.h"
-// #include "flare/fiber/fiber.h"
-// #include "flare/fiber/runtime.h"
-// #include "flare/fiber/this_fiber.h"
+#include "flare/fiber/fiber.h"
+#include "flare/fiber/runtime.h"
+#include "flare/fiber/this_fiber.h"
 #include "flare/init/on_init.h"
 #include "flare/init/override_flag.h"
 // #include "flare/io/event_loop.h"
@@ -103,7 +103,7 @@ int Start(int argc, char** argv, Function<int(int, char**)> cb) {
 
   InitializeBasicRuntime();
   detail::RunAllInitializers();
-  // fiber::StartRuntime();
+  fiber::StartRuntime();
 
   FLARE_LOG_INFO("Flare runtime initialized.");
 
@@ -141,7 +141,7 @@ int Start(int argc, char** argv, Function<int(int, char**)> cb) {
     l.wait();
   }
 
-  // fiber::TerminateRuntime();
+  fiber::TerminateRuntime();
   detail::RunAllFinalizers();
   TerminateBasicRuntime();
 
@@ -155,7 +155,7 @@ void WaitForQuitSignal() {
   InstallQuitSignalHandler();
 
   while (!g_quit_signal.load(std::memory_order_relaxed)) {
-    // this_fiber::SleepFor(100ms);
+    this_fiber::SleepFor(100ms);
   }
   FLARE_LOG_INFO("Quit signal received.");
 }
@@ -171,7 +171,7 @@ void InitializeBasicRuntime() {
 }
 
 void TerminateBasicRuntime() {
-  // internal::FlushDpcs();
+  internal::FlushDpcs();
   internal::TimeKeeper::Instance()->Stop();
   internal::TimeKeeper::Instance()->Join();
   internal::BackgroundTaskHost::Instance()->Stop();

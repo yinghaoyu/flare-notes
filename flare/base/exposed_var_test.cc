@@ -1,7 +1,7 @@
 #include "flare/base/exposed_var.h"
 
 #include "gtest/gtest.h"
-#include "jsoncpp/json.h"
+#include "json/json.h"
 
 #include "flare/base/write_mostly/metrics.h"
 #include "flare/testing/main.h"

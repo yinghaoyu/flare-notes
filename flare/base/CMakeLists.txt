@@ -10,10 +10,16 @@ set(base_SRCS
   internal/background_task_host.cc
   internal/logging.cc
   internal/cpu.cc
+  internal/dpc.cc
   internal/memory_barrier.cc
   internal/thread_pool.cc
   internal/time_keeper.cc
   internal/index_alloc.cc
+  monitoring/common.cc
+  monitoring/dispatcher.cc
+  monitoring/event.cc
+  monitoring/init.cc
+  monitoring/monitoring_system.cc
   net/endpoint.cc
   net/uri.cc
   object_pool/disabled.cc
@@ -23,6 +29,7 @@ set(base_SRCS
   thread/latch.cc
   thread/attribute.cc
   thread/spinlock.cc
+  thread/out_of_duty_callback.cc
   write_mostly/metrics.cc
   logging.cc
   status.cc
@@ -30,6 +37,8 @@ set(base_SRCS
   tsc.cc
   object_pool.cc
   exposed_var.cc
+  monitoring.cc
+  erased_ptr.cc
   )
 
 set(IN_LIBS
@@ -39,15 +48,16 @@ set(IN_LIBS
   gtest
   gmock
   benchmark
-  glog::glog
-  fmt::fmt
-  jsoncpp_lib
-  xxhash
-  pthread
-  dl
   )
 
 add_library(flare_base ${base_SRCS})
+target_link_libraries(flare_base glog::glog fmt::fmt jsoncpp_lib xxhash yaml-cpp pthread dl)
+
+add_executable(casting_test casting_test.cc)
+target_link_libraries(casting_test ${IN_LIBS} gtest_main)
+
+add_executable(casting_benchmark casting_benchmark.cc)
+target_link_libraries(casting_benchmark ${IN_LIBS} benchmark_main)
 
 add_executable(deferred_test deferred_test.cc)
 target_link_libraries(deferred_test ${IN_LIBS} gtest_main)
@@ -124,17 +134,30 @@ target_link_libraries(tsc_benchmark ${IN_LIBS} benchmark_main)
 add_executable(type_index_test type_index_test.cc)
 target_link_libraries(type_index_test ${IN_LIBS} gtest_main)
 
-# add_executable(hazptr_test hazptr_test.cc)
-# target_link_libraries(hazptr_test ${IN_LIBS}) # 不需要 gtest_main
+add_executable(hazptr_test hazptr_test.cc)
+target_link_libraries(hazptr_test ${IN_LIBS}) # 不需要 gtest_main
 
 add_executable(hazptr_benchmark hazptr_benchmark.cc)
 target_link_libraries(hazptr_benchmark ${IN_LIBS} benchmark_main)
 
-# add_executable(exposed_var_test exposed_var_test.cc)
-# target_link_libraries(exposed_var_test ${IN_LIBS}) # 不需要 gtest_main
+add_executable(exposed_var_test exposed_var_test.cc)
+target_link_libraries(exposed_var_test ${IN_LIBS}) # 不需要 gtest_main
+
+add_executable(dependency_registry_test dependency_registry_test.cc)
+target_link_libraries(dependency_registry_test ${IN_LIBS} gtest_main)
+
+# add_executable(monitoring_test monitoring_test.cc)
+# target_link_libraries(dependency_registry_test ${IN_LIBS}) # 不需要 gtest_main
+
+add_executable(monitoring_benchmark monitoring_benchmark.cc)
+target_link_libraries(monitoring_benchmark ${IN_LIBS} benchmark_main)
+
+add_executable(monitoring_with_global_tags_test monitoring_with_global_tags_test.cc)
+target_link_libraries(monitoring_with_global_tags_test ${IN_LIBS}) # 不需要 gtest_main
 
 add_subdirectory(experimental)
 add_subdirectory(internal)
+add_subdirectory(monitoring)
 add_subdirectory(net)
 add_subdirectory(object_pool)
 add_subdirectory(thread)

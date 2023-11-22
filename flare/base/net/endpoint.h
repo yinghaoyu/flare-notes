@@ -256,4 +256,11 @@ Endpoint EndpointFromString(const std::string& ip_port);
 
 }  // namespace flare
 
+// Providing an explicit ostream-based formatter for
+// `std::ostream& operator<<(std::ostream&, const Endpoint&);`
+//
+// @sa https://github.com/fmtlib/fmt/issues/3318
+template <>
+struct fmt::formatter<flare::Endpoint> : fmt::ostream_formatter {};
+
 #endif  // FLARE_BASE_NET_ENDPOINT_H_

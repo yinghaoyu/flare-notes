@@ -6,6 +6,8 @@ SET(CMAKE_CXX_COMPILER "/usr/bin/g++-10")
 
 set(CMAKE_CXX_STANDARD 20)
 
+ENABLE_LANGUAGE( ASM)
+
 project(flare C CXX)
 
 set(CMAKE_VERBOSE_MAKEFILEON OFF)
@@ -17,6 +19,7 @@ set(CXX_FLAGS
 find_package (glog 0.6.0 REQUIRED)
 find_package(fmt REQUIRED)
 find_package(jsoncpp REQUIRED)
+find_package(yaml-cpp REQUIRED)
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
@@ -24,5 +27,6 @@ SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_subdirectory(flare/base)
+add_subdirectory(flare/fiber)
 add_subdirectory(flare/init)
 add_subdirectory(flare/testing)
