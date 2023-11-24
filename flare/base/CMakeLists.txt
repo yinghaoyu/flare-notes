@@ -1,6 +1,22 @@
 set(base_SRCS
-  demangle.cc
-  chrono.cc
+  buffer/builtin_buffer_block.cc
+  buffer/compression_output_stream.cc
+  buffer/packing.cc
+  buffer/packing.pb.cc
+  buffer/view.cc
+  buffer/zero_copy_stream.cc
+  compression/compression.cc
+  compression/gzip.cc
+  compression/lz4.cc
+  compression/snappy.cc
+  compression/util.cc
+  compression/zstd.cc
+  crypto/blake3.cc
+  crypto/md5.cc
+  crypto/sha.cc
+  encoding/base64.cc
+  encoding/hex.cc
+  encoding/percent.cc
   experimental/bloom_filter.cc
   experimental/byte_set.cc
   experimental/uuid.cc
@@ -31,6 +47,10 @@ set(base_SRCS
   thread/spinlock.cc
   thread/out_of_duty_callback.cc
   write_mostly/metrics.cc
+  buffer.cc
+  demangle.cc
+  compression.cc
+  chrono.cc
   logging.cc
   status.cc
   string.cc
@@ -51,7 +71,30 @@ set(IN_LIBS
   )
 
 add_library(flare_base ${base_SRCS})
-target_link_libraries(flare_base glog::glog fmt::fmt jsoncpp_lib xxhash yaml-cpp pthread dl)
+target_link_libraries(flare_base
+                      glog::glog
+                      fmt::fmt
+                      jsoncpp_lib
+                      xxhash
+                      yaml-cpp
+                      z #zlib
+                      ssl
+                      crypto
+                      blake3
+                      protobuf
+                      pthread
+                      dl)
+
+set(BLOCK_SIZES "4K" "64K" "1M")
+foreach(block_size ${BLOCK_SIZES})
+  set(TEST_NAME "buffer_test_${block_size}")
+  add_executable(${TEST_NAME} buffer_test.cc)
+  target_compile_definitions(${TEST_NAME} PRIVATE BUFFER_BLOCK_SIZE="${block_size}")
+  target_link_libraries(${TEST_NAME} ${IN_LIBS}) # 不需要 gtest_main
+ endforeach()
+
+add_executable(compression_test compression_test.cc)
+target_link_libraries(compression_test ${IN_LIBS} gtest_main)
 
 add_executable(casting_test casting_test.cc)
 target_link_libraries(casting_test ${IN_LIBS} gtest_main)
@@ -155,6 +198,10 @@ target_link_libraries(monitoring_benchmark ${IN_LIBS} benchmark_main)
 add_executable(monitoring_with_global_tags_test monitoring_with_global_tags_test.cc)
 target_link_libraries(monitoring_with_global_tags_test ${IN_LIBS}) # 不需要 gtest_main
 
+add_subdirectory(buffer)
+add_subdirectory(compression)
+add_subdirectory(crypto)
+add_subdirectory(encoding)
 add_subdirectory(experimental)
 add_subdirectory(internal)
 add_subdirectory(monitoring)

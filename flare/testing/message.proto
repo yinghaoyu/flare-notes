@@ -1,0 +1,44 @@
+// This file defines several messages for you.
+//
+// In case you need a Protocol Buffers message but have no special contraints on
+// the message, you can use messages defined here without resorting to introduce
+// your own IDL.
+//
+// Feel free to add new messages here. This file is ONLY used by UTs.
+
+// TODO(luobogao): We should also remove `//flare/rpc/protobuf:service_test` and
+// add an `echo_service.proto` in `//flare/testing` instead.
+
+syntax = "proto3";
+
+package flare.testing;
+
+enum Enum {
+  ENUM_0 = 0;
+  ENUM_1 = 1;
+  ENUM_2 = 2;
+}
+
+message One {
+  string str = 1;
+  int32 integer = 2;
+}
+
+message Two {
+  string str = 1;
+  int32 integer = 2;
+}
+
+message ComplexMessage {
+  int32 integer = 1;
+  string str = 2;
+  bool boolean = 3;
+  Enum enumeration = 4;
+  oneof number {
+    One one = 5;
+    Two two = 6;
+  }
+  repeated int32 numbers = 7;
+  repeated string strs = 8;
+}
+

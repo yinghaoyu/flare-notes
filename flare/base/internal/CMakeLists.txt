@@ -58,11 +58,11 @@ target_link_libraries(singly_linked_list_test ${IN_LIBS} gtest_main)
 add_executable(thread_pool_test thread_pool_test.cc)
 target_link_libraries(thread_pool_test ${IN_LIBS} gtest_main)
 
-# add_executable(time_keeper_test time_keeper_test.cc)
-# target_link_libraries(time_keeper_test ${IN_LIBS}) # 这里不需要 gtest_main
+add_executable(time_keeper_test time_keeper_test.cc)
+target_link_libraries(time_keeper_test ${IN_LIBS}) # 这里不需要 gtest_main
 
-# add_executable(dpc_test dpc_test.cc)
-# target_link_libraries(dpc_test ${IN_LIBS}) # 这里不需要 gtest_main
+add_executable(dpc_test dpc_test.cc)
+target_link_libraries(dpc_test ${IN_LIBS}) # 这里不需要 gtest_main
 
 add_executable(time_view_test time_view_test.cc)
 target_link_libraries(time_view_test ${IN_LIBS} gtest_main)

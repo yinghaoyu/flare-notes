@@ -17,6 +17,7 @@ set(CXX_FLAGS
   )
 
 find_package (glog 0.6.0 REQUIRED)
+find_package(GTest REQUIRED)
 find_package(fmt REQUIRED)
 find_package(jsoncpp REQUIRED)
 find_package(yaml-cpp REQUIRED)
