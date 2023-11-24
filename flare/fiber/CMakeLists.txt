@@ -40,8 +40,8 @@ set(IN_LIBS
 add_executable(alternatives_test alternatives_test.cc)
 target_link_libraries(alternatives_test ${IN_LIBS} gtest_main)
 
-# add_executable(async_test async_test.cc)
-# target_link_libraries(async_test ${IN_LIBS} gtest_main)
+add_executable(async_test async_test.cc)
+target_link_libraries(async_test ${IN_LIBS} gtest_main)
 
 add_executable(barrier_test barrier_test.cc)
 target_link_libraries(barrier_test ${IN_LIBS} gtest_main)
@@ -49,8 +49,8 @@ target_link_libraries(barrier_test ${IN_LIBS} gtest_main)
 add_executable(condition_variable_test condition_variable_test.cc)
 target_link_libraries(condition_variable_test ${IN_LIBS} gtest_main)
 
-# add_executable(execution_context_test execution_context_test.cc)
-# target_link_libraries(execution_context_test ${IN_LIBS} gtest_main)
+add_executable(execution_context_test execution_context_test.cc)
+target_link_libraries(execution_context_test ${IN_LIBS} gtest_main)
 
 add_executable(execution_context_benchmark execution_context_benchmark.cc)
 target_link_libraries(execution_context_benchmark ${IN_LIBS}) # 不需要 benchmark_main
@@ -64,8 +64,8 @@ target_link_libraries(fiber_local_benchmark ${IN_LIBS} benchmark_main)
 add_executable(fiber_test fiber_test.cc)
 target_link_libraries(fiber_test ${IN_LIBS} gtest_main)
 
-# add_executable(future_test future_test.cc)
-# target_link_libraries(future_test ${IN_LIBS} gtest_main)
+add_executable(fiber_future_test future_test.cc)
+target_link_libraries(fiber_future_test ${IN_LIBS} gtest_main)
 
 add_executable(fiber_latch_test latch_test.cc)
 target_link_libraries(fiber_latch_test ${IN_LIBS} gtest_main)
@@ -88,5 +88,5 @@ target_link_libraries(this_fiber_test ${IN_LIBS} gtest_main)
 add_executable(timer_test timer_test.cc)
 target_link_libraries(timer_test ${IN_LIBS} gtest_main)
 
-# add_executable(work_queue_test work_queue_test.cc)
-# target_link_libraries(work_queue_test ${IN_LIBS} gtest_main)
+add_executable(work_queue_test work_queue_test.cc)
+target_link_libraries(work_queue_test ${IN_LIBS} gtest_main)

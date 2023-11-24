@@ -16,8 +16,8 @@ target_link_libraries(biased_mutex_test ${IN_LIBS} gtest_main)
 add_executable(biased_mutex_benchmark biased_mutex_benchmark.cc)
 target_link_libraries(biased_mutex_benchmark ${IN_LIBS} benchmark_main)
 
-# add_executable(builtin_monitoring_test builtin_monitoring_test.cc)
-# target_link_libraries(builtin_monitoring_test ${IN_LIBS}) # 不需要 gtest_main
+add_executable(builtin_monitoring_test builtin_monitoring_test.cc)
+target_link_libraries(builtin_monitoring_test ${IN_LIBS}) # 不需要 gtest_main
 
 add_executable(hash_map_test hash_map_test.cc)
 target_link_libraries(hash_map_test ${IN_LIBS} gtest_main)

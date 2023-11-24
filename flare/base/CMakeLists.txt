@@ -42,6 +42,11 @@ set(base_SRCS
   object_pool/global.cc
   object_pool/memory_node_shared.cc
   object_pool/thread_local.cc
+  option/gflags_provider.cc
+  option/json_parser.cc
+  option/key.cc
+  option/option_provider.cc
+  option/option_service.cc
   thread/latch.cc
   thread/attribute.cc
   thread/spinlock.cc
@@ -56,6 +61,7 @@ set(base_SRCS
   string.cc
   tsc.cc
   object_pool.cc
+  option.cc
   exposed_var.cc
   monitoring.cc
   erased_ptr.cc
@@ -189,8 +195,8 @@ target_link_libraries(exposed_var_test ${IN_LIBS}) # 不需要 gtest_main
 add_executable(dependency_registry_test dependency_registry_test.cc)
 target_link_libraries(dependency_registry_test ${IN_LIBS} gtest_main)
 
-# add_executable(monitoring_test monitoring_test.cc)
-# target_link_libraries(dependency_registry_test ${IN_LIBS}) # 不需要 gtest_main
+add_executable(monitoring_test monitoring_test.cc)
+target_link_libraries(monitoring_test ${IN_LIBS}) # 不需要 gtest_main
 
 add_executable(monitoring_benchmark monitoring_benchmark.cc)
 target_link_libraries(monitoring_benchmark ${IN_LIBS} benchmark_main)
@@ -198,14 +204,22 @@ target_link_libraries(monitoring_benchmark ${IN_LIBS} benchmark_main)
 add_executable(monitoring_with_global_tags_test monitoring_with_global_tags_test.cc)
 target_link_libraries(monitoring_with_global_tags_test ${IN_LIBS}) # 不需要 gtest_main
 
+add_executable(option_benchmark option_benchmark.cc)
+target_link_libraries(option_benchmark ${IN_LIBS} benchmark_main)
+
+add_executable(option_test option_test.cc)
+target_link_libraries(option_test ${IN_LIBS}) # 不需要 gtest_main
+
 add_subdirectory(buffer)
 add_subdirectory(compression)
 add_subdirectory(crypto)
 add_subdirectory(encoding)
 add_subdirectory(experimental)
+add_subdirectory(future)
 add_subdirectory(internal)
 add_subdirectory(monitoring)
 add_subdirectory(net)
 add_subdirectory(object_pool)
+add_subdirectory(option)
 add_subdirectory(thread)
 add_subdirectory(write_mostly)

@@ -6,13 +6,13 @@
 #include "glog/logging.h"
 #include "glog/raw_logging.h"
 
-// #include "flare/base/buffer.h"
+#include "flare/base/buffer.h"
 #include "flare/base/internal/background_task_host.h"
 #include "flare/base/internal/dpc.h"
 #include "flare/base/internal/time_keeper.h"
 #include "flare/base/logging.h"
 #include "flare/base/monitoring/init.h"
-// #include "flare/base/option.h"
+#include "flare/base/option.h"
 #include "flare/base/random.h"
 #include "flare/base/thread/latch.h"
 #include "flare/fiber/fiber.h"
@@ -58,7 +58,7 @@ void InstallQuitSignalHandler() {
 
 // Prewarm some frequently used object pools.
 void PrewarmObjectPools() {
-  /* constexpr auto kFibersPerSchedulingGroup = 1024;
+  constexpr auto kFibersPerSchedulingGroup = 1024;
   constexpr auto kBufferSizePerFiber = 131072;
 
   for (std::size_t i = 0; i != fiber::GetSchedulingGroupCount(); ++i) {
@@ -72,7 +72,7 @@ void PrewarmObjectPools() {
             builder.Append(temp, sizeof(temp));
           });
     }
-  } */
+  }
 }
 
 }  // namespace
@@ -111,25 +111,25 @@ int Start(int argc, char** argv, Function<int(int, char**)> cb) {
   int rc = 0;
   {
     Latch l(1);
-    /* fiber::internal::StartFiberDetached([&] {
-      StartAllEventLoops();
+    fiber::internal::StartFiberDetached([&] {
+      // StartAllEventLoops();
       PrewarmObjectPools();  // To minimize slowness on startup.
 
       object_pool::detail::memory_node_shared::StartPeriodicalCacheWasher();
       option::InitializeOptions();  // It this too late?
       monitoring::InitializeMonitoringSystem();
-      binlog::InitializeBinlog();
+      // binlog::InitializeBinlog();
 
       rc = cb(argc, argv);  // User's callback.
 
-      rpc::internal::StopAllGlobalStreamCallGatePools();
-      rpc::internal::JoinAllGlobalStreamCallGatePools();
+      // rpc::internal::StopAllGlobalStreamCallGatePools();
+      // rpc::internal::JoinAllGlobalStreamCallGatePools();
 
-      internal::HttpEngine::Stop();
-      internal::HttpEngine::Join();
+      // internal::HttpEngine::Stop();
+      // internal::HttpEngine::Join();
 
-      StopAllEventLoops();
-      JoinAllEventLoops();
+      // StopAllEventLoops();
+      // JoinAllEventLoops();
 
       monitoring::TerminateMonitoringSystem();
       option::ShutdownOptions();
@@ -137,7 +137,7 @@ int Start(int argc, char** argv, Function<int(int, char**)> cb) {
 
       l.count_down();
     });  // Don't `join()` here, we can't use fiber synchronization
-         // primitives outside of fiber context.*/
+         // primitives outside of fiber context.
     l.wait();
   }
 
