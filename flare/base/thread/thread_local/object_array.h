@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "flare/base/align.h"
+#include "flare/base/function.h"
 #include "flare/base/internal/annotation.h"
 #include "flare/base/internal/memory_barrier.h"
 #include "flare/base/likely.h"

@@ -1,4 +1,6 @@
 flare/base/dependency_registry.h
+flare/base/exposed_var.h
 flare/base/future.h
 flare/base/option.h
 flare/init/openssl_initializer.cc
+scheduling_parameters

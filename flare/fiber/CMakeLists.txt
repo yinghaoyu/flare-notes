@@ -90,3 +90,5 @@ target_link_libraries(timer_test ${IN_LIBS} gtest_main)
 
 add_executable(work_queue_test work_queue_test.cc)
 target_link_libraries(work_queue_test ${IN_LIBS} gtest_main)
+
+add_subdirectory(detail)
