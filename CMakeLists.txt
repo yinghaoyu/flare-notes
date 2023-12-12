@@ -16,6 +16,8 @@ set(CXX_FLAGS
   -g
   )
 
+# set(CMAKE_CXX_LINKER_FLAGS "${CMAKE_CXX_LINKER_FLAGS} -Wl,--whole-archive")
+
 find_package (glog 0.6.0 REQUIRED)
 find_package(GTest REQUIRED)
 find_package(fmt REQUIRED)
@@ -30,4 +32,5 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_subdirectory(flare/base)
 add_subdirectory(flare/fiber)
 add_subdirectory(flare/init)
+add_subdirectory(flare/io)
 add_subdirectory(flare/testing)

@@ -1,4 +1,5 @@
 set(testing_SRCS
+  endpoint.cc
   main.cc
   message.pb.cc
   )

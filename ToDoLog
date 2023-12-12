@@ -3,4 +3,6 @@ flare/base/exposed_var.h
 flare/base/future.h
 flare/base/option.h
 flare/init/openssl_initializer.cc
-scheduling_parameters
+flare/io/util/rate_limiter_integration_test
+flare/fiber/scheduling_parameters
+flare/init/start_event_loop
