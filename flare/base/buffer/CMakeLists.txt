@@ -1,5 +1,5 @@
 add_executable(compression_output_stream_test compression_output_stream_test.cc)
-target_link_libraries(compression_output_stream_test ${IN_LIBS} gtest_main)
+target_link_libraries(compression_output_stream_test ${IN_LIBS}  gtest_main)
 
 add_executable(packing_test packing_test.cc)
 target_link_libraries(packing_test ${IN_LIBS} gtest_main)

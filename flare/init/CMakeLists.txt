@@ -7,7 +7,7 @@ set(init_SRCS
   )
 
 add_library(flare_init ${init_SRCS})
-target_link_libraries(flare_init flare_testing flare_fiber)
+target_link_libraries(flare_init flare_testing flare_fiber flare_io)
 
 set(IN_LIBS
   flare_init

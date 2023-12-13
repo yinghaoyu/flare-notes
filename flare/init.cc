@@ -20,7 +20,7 @@
 #include "flare/fiber/this_fiber.h"
 #include "flare/init/on_init.h"
 #include "flare/init/override_flag.h"
-// #include "flare/io/event_loop.h"
+#include "flare/io/event_loop.h"
 // #include "flare/net/http/http_client.h"
 // #include "flare/net/internal/http_engine.h"
 // #include "flare/rpc/binlog/init.h"
@@ -112,7 +112,7 @@ int Start(int argc, char** argv, Function<int(int, char**)> cb) {
   {
     Latch l(1);
     fiber::internal::StartFiberDetached([&] {
-      // StartAllEventLoops();
+      StartAllEventLoops();
       PrewarmObjectPools();  // To minimize slowness on startup.
 
       object_pool::detail::memory_node_shared::StartPeriodicalCacheWasher();
@@ -128,8 +128,8 @@ int Start(int argc, char** argv, Function<int(int, char**)> cb) {
       // internal::HttpEngine::Stop();
       // internal::HttpEngine::Join();
 
-      // StopAllEventLoops();
-      // JoinAllEventLoops();
+      StopAllEventLoops();
+      JoinAllEventLoops();
 
       monitoring::TerminateMonitoringSystem();
       option::ShutdownOptions();

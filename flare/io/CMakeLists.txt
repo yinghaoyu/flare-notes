@@ -19,7 +19,7 @@ set(io_SRCS
   )
 
 add_library(flare_io ${io_SRCS})
-target_link_libraries(flare_io flare_base flare_fiber flare_testing flare_init)
+target_link_libraries(flare_io flare_base flare_fiber)
 
 set(IN_LIBS
   flare_init
