@@ -1,0 +1,14 @@
+add_executable(hbase_channel_test hbase_channel_test.cc)
+target_link_libraries(hbase_channel_test ${IN_LIBS})
+
+add_executable(hbase_client_controller_test hbase_client_controller_test.cc)
+target_link_libraries(hbase_client_controller_test ${IN_LIBS})
+
+add_executable(hbase_controller_common_test hbase_controller_common_test.cc)
+target_link_libraries(hbase_controller_common_test ${IN_LIBS})
+
+add_executable(hbase_server_controller_test hbase_server_controller_test.cc)
+target_link_libraries(hbase_server_controller_test ${IN_LIBS})
+
+add_executable(hbase_service_test hbase_service_test.cc)
+target_link_libraries(hbase_service_test ${IN_LIBS})
