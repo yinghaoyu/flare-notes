@@ -18,7 +18,7 @@
 #include <string>
 #include <utility>
 
-#include "jsoncpp/json.h"
+#include "json-c/json.h"
 
 #include "flare/base/chrono.h"
 #include "flare/base/deferred.h"
